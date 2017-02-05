@@ -22,7 +22,14 @@ public class CanvasView extends View {
     ArrayList<Dot>  _dots = new ArrayList<Dot>();
 
     private Paint _paint;
+    int color=Color.GREEN;
 
+    public void setColor(int c){
+        color=c;
+    }
+    public int getColor(){
+        return color;
+    }
     public CanvasView(Context context){
         super(context);
         initPaint(CanvasView.CURRENT_CANVAS);
@@ -56,7 +63,7 @@ public class CanvasView extends View {
         _dots.clear();
         _paint = null;
         _paint = new Paint();
-        _paint.setColor(Color.GREEN);
+        _paint.setColor(color);
         _paint.setStrokeWidth(2);
         _paint.setAntiAlias(true);
 

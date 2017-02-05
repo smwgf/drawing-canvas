@@ -1,5 +1,6 @@
 package com.bobaemw.drawingcanvas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,6 +11,10 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
     CanvasView _canvasView = null;
     Button _newCanvasBtn = null;
+
+    private final static int COLOR_ACTIVITY = 1;
+    int _color;
+    Intent _intent;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_color) {
+            startColorActivity();
             return true;
         }else if (id == R.id.menu_brush) {
             return true;
@@ -58,5 +64,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    public void startColorActivity(){
+        _intent = new Intent(MainActivity.this, ColorPickerActivity.class);
+        if(_color != 0){
+            _intent.putExtra("oldColor", _color);
+        }
+        startActivityForResult(_intent, COLOR_ACTIVITY);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == COLOR_ACTIVITY){
+                _color = data.getIntExtra("color", 0);
+                _canvasView.setColor(_color);
+                _canvasView.initPaint(CanvasView.CURRENT_CANVAS);
+            }
+        }
+    }
 }
